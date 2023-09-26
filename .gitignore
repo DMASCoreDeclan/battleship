@@ -6,3 +6,7 @@ __pycache__/
 *.py[cod]
 node_modules/
 .github/
+battleship.py
+letter.py
+README.md
+
