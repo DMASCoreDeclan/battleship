@@ -2,16 +2,13 @@ import os
 from time import sleep
 
 
-grid_size = 0
+grid_size = 10
 ships = 1
 name = ""
 bombs = grid_size * .5
-COLUMN_HEADINGS = 'ABCDEFGHIJ'
-COMPUTER_BOARD = [[' '] * grid_size for x in range(grid_size)]
-PREVIOUS_GUESS_BOARD = [[' '] * grid_size for x in range(grid_size)]
 
-letter_conversion = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9, 
-}
+
+letter_conversion = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9}
 def clear():
     os.system('clear')
 
@@ -49,7 +46,6 @@ Pick a number between 4 and 10:\n"))
         except ValueError:
                 print("Thats not a valid number")
 
-
 def check_ships_value(name):
     while True: 
         try:  
@@ -60,7 +56,6 @@ Pick a number between 1 and 5:\n"))
         except ValueError:
                 print("Thats not a valid number")
     
-
 def check_bomb_value(name):
     while True:    
         try:  
@@ -80,14 +75,28 @@ def get_user_preferences():
     ships = check_ships_value(name)
     print(ships)
     bombs = check_bomb_value(name)
-    bombs = (bombs * grid_size * grid_size)
+    bombs = int(bombs * grid_size * grid_size)
     print(bombs)
     print(f"{name}, you have chosen to play on a {grid_size} x {grid_size} grid with {ships} ships\n\
-with {bombs} bombs!  Good Luck!")
+using less than {int(bombs)} bombs!  Good Luck!")
     return(name, grid_size, ships, bombs)
 
-def draw_board():
-    pass
+def draw_board(board, grid_size):
+    if board == "computer_board":
+        board = [[' '] * grid_size for x in range(grid_size)]
+    else:
+        board = [[' '] * grid_size for x in range(grid_size)]
+    
+    clear()
+    heading1 = "  A B C D E F G H I J " # Heading for Grid
+    heading2 = " ---------------------" # Heading decorator for Grid
+    heading_value = (grid_size * 2) + 2 # There are 2 leading spaces and each row requires 2 spaces
+    print(heading1[:heading_value])
+    print(heading2[:heading_value])
+    grid_row = 0
+    for row in board:
+        print("%d|%s|" % (grid_row, "|".join(row)))
+        grid_row +=1
 
 def request_guess():
     pass
@@ -114,10 +123,10 @@ def build_grid(grid_size):
 
 def main():
     clear()
-    welcome_message()
+    # welcome_message()
     name, grid_size, ships, bombs = get_user_preferences()
     print(name, grid_size, ships, bombs)
-    draw_board()
+    draw_board("computer_board", grid_size)
     request_guess()
     validate_guess()
     place_guess()
