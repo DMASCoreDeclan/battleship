@@ -21,7 +21,7 @@ X - Hit\n\
 * - Miss\n\
 | | Available as a target\n")
     sleep(7)
-    os.system('cls')
+    os.system('clear')
 
 def get_user_preferences():
     name = input("What is your name: \n")
@@ -56,7 +56,7 @@ def build_grid(grid_size):
 
 
 def main():
-    os.system('cls')
+    os.system('clear')
     welcome_message()
     name, grid_size = get_user_preferences()
     print(name, grid_size)
