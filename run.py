@@ -2,13 +2,11 @@ import os # for clear()
 from time import sleep # delay time before clear() is used
 from random import randint # for generating random numbers
 
-grid_size = 0 # initialise grid_size
+# grid_size = 10 # initialise grid_size
 ships = 0 # initialise number of ships
 name = "" # initialise name
 bombs = 0 # initialise number of bombs
 
-
-letter_conversion = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9}
 def clear():
     """
     clears the sreen so that it doesn't become too crowded with previous interactions
@@ -53,6 +51,7 @@ Pick a number between 4 and 10:\n"))
                 return grid_size
         except ValueError:
                 print("Thats not a valid number")
+
 
 def check_ships_value(name):
     """
@@ -112,12 +111,10 @@ def draw_board(board, grid_size):
     It then draws a board with letters as headings and numbers as row values.  The user
     will use the Letter and number input to determine where they would like to place their 
     next guess.  
+    Returns HEADING1 which is the list of valid letters that the user must choose fom later.
     """
-    if board == "computer_board":
-        board = [[' '] * grid_size for x in range(grid_size)] # allows us to see the computer location of ships for testing purposes
-    else:
-        board = [[' '] * grid_size for x in range(grid_size)]
     clear()
+    print(grid_size)
     heading1 = "  A B C D E F G H I J " # Heading for Grid
     heading2 = " ---------------------" # Heading decorator for Grid
     heading_value = (grid_size * 2) + 2 # There are 2 leading spaces and each row requires 2 spaces
@@ -125,19 +122,71 @@ def draw_board(board, grid_size):
     print(heading2[:heading_value])
     grid_row = 0 #  begins the row numbering at 0
     for row in board:
-        """
-        %s and %d are placeholders for a string and a number respectively. 
-        %s returns the string and %d returns a number.  
-        The values are passed using % operator
-        """
-        print("%d|%s|" % (grid_row, "|".join(row))) 
+        print("%d|%s|" % (grid_row, "|".join(row))) # %s and %d are placeholders for a string and a number respectively. %s returns the string and %d returns a number.  The values are passed using % operator
         grid_row +=1
+    return heading1[:heading_value]
 
-def request_guess():
-    pass
+def place_ships(board, grid_size, ships):
+    """
+    identifies a location for the computer to locate their SHIPS based on the
+    user supplied GRID_SIZE and number of SHIPS.  The for an while keep going
+    until the correct number of SHIPS have been placed in the correct location 
+    of the user defined GRID_SIZE.  
+    Return a populated board with Xs according to the input in get_user_preferences
+    """
+    for ship in range(ships):
+        print(ship, ships)
+        ship_row = randint(0, (grid_size - 1))
+        print(ship_row)
+        ship_letter = randint(0, (grid_size - 1))
+        print(ship_letter)
+        
+        while board[ship_row][ship_letter] == "X":
+            ship_letter = randint(0, (grid_size - 1))
+            ship_row = randint(0, (grid_size - 1))
+        board[ship_row][ship_letter] = "X"
 
-def validate_guess():
-    pass
+def get_letter(heading_value):
+    """
+    Validates user input so that the choice they make for the letter of the column exists in the grid.
+    The letter is converted to a number from the LETTER_MAP dictionary.
+    Returns a letter input as a 0 based index number.  
+    """
+    letter_map = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9} # used to convert the heading letter into a number
+    while True: 
+        try:  
+            ship_column = input(f"{name}, please pick a letter from {heading_value[0]} - {heading_value[-1]}\n").upper()       
+            if ship_column in heading_value:
+                return letter_map[ship_column] 
+        except ValueError:
+                print("Thats not a valid letter")
+
+
+def get_number(grid_size):
+    """
+    Validates user input so that the choice they make for the number of the row exists in the grid.
+    Returns a 0 based index number.  
+    """
+    while True: 
+        try:  
+            ship_row = int(input(f"{name}, please pick a number from 0 - {grid_size -1}\n"))       
+            if ship_row <= (grid_size - 1):
+                return ship_row 
+        except ValueError:
+                print("Thats not a valid number")
+    
+def request_guess(heading_value, grid_size):
+    """
+    Requests user input for a letter and a number to identify where the user
+    wants to place their bomb.  The input is validated against the limitations 
+    of the parameters that they chose in get_user_preferences.  If its not a valid 
+    input, they are requested for the information until it is valid.  
+    Returns a valid set of 0 based numbers within the GRID_SIZE
+    """
+    ship_column = get_letter(heading_value)
+    ship_row = get_number(grid_size)
+    return ship_row, ship_column
+
 
 def place_guess():
     pass
@@ -160,13 +209,27 @@ def main():
     clear()
     # welcome_message()
     name, grid_size, ships, bombs = get_user_preferences()
-    print(name, grid_size, ships, bombs)
-    draw_board("computerboard", grid_size)
-    request_guess()
-    validate_guess()
-    place_guess()
-    check_winner()
-    check_lives()
+    # print(name, grid_size, ships, bombs)
+    # print(type(name), name)
+    # print(type(grid_size), grid_size)
+    # print(type(ships), ships)
+    # print(type(bombs), bombs)
+    COMPUTER_BOARD = [[' '] * grid_size for x in range(grid_size)] # records the computer location of ships for testing purposes
+    draw_board(COMPUTER_BOARD, grid_size)
+    heading_value = draw_board(COMPUTER_BOARD, grid_size)
+    heading_value = heading_value.replace(" ", "")
+    print(heading_value)
+    place_ships(COMPUTER_BOARD, grid_size, ships)
+    print(COMPUTER_BOARD) # shows the computers location of ships for testing purposes
+    ship_row, ship_column = request_guess(heading_value, grid_size)
+    print(ship_row, ship_column)
+    # validate_guess()
+    # place_guess()
+    # check_winner()
+    # check_lives()
 
+
+
+# PREVIOUS_GUESS_BOARD = [[' '] * grid_size for x in range(grid_size)]
 
 main()
