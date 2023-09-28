@@ -15,13 +15,13 @@ def prepare_guess_board(grid_size):
     previous_guess_board = [[' '] * grid_size for x in range(grid_size)]
     return previous_guess_board
 
-def clear():
+# def clear():
     """
     clears the sreen so that it doesn't become too crowded with previous interactions
     """
     os.system('clear')
 
-def welcome_message():
+# def welcome_message():
     """
     This message will appear whenever the game starts or restarts, it explains how
     the game works.
@@ -44,7 +44,7 @@ X - Miss\n\
     sleep(7)
     clear()
 
-def get_grid_size(name):
+# def get_grid_size(name):
     """
     Validates user input so that the choices they make for the grid_size are within the boundaries 
     of the program.  Asks the user to enter new inputs until they are acceptable. 
@@ -62,7 +62,7 @@ Pick a number between 4 and 10:\n"))
                 print("Thats not a valid number")
 
 
-def check_ships_value(name):
+# def check_ships_value(name):
     """
     Validates user input so that the choices they make for the number of ships are within
     the boundaries of the program.  Asks the user to enter new inputs until they are acceptable.  
@@ -77,7 +77,7 @@ Pick a number between 1 and 5:\n"))
         except ValueError:
                 print("Thats not a valid number")
     
-def check_bomb_value(name):
+# def check_bomb_value(name):
     """
     Validates user input so that the choices they make for the nu,ber of bombs are within the 
     boundaries of the program.  Asks the user to enter new inputs until they are acceptable.  
@@ -96,7 +96,7 @@ Pick a percentage between 5 and 50:\n"))
         except ValueError:
                 print("Thats not a valid number")
 
-def get_user_preferences():
+# def get_user_preferences():
     """
     Asks for user input for NAME, GRID_SIZE, SHIPS and BOMBS.  It calls a function after each
     input and validates with a function specific to the imput parameters.    
@@ -169,7 +169,6 @@ def get_letter(heading_value):
                 return letter_map[ship_column] 
         except ValueError:
                 print("Thats not a valid letter")
-
 
 def get_number(grid_size):
     """
