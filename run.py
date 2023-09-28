@@ -32,11 +32,20 @@ def welcome():
     clear()
 
 def get_player_name():
-    pass
+    """
+    Asks for user input for NAME.      
+    """
+    global name
+    name = input("What is your name: \n")
+    print(f"Thank you {name}")
+    sleep(3)
+    clear()
+
 
 def new_game():
     welcome()
-    return
+    get_player_name()
+    
 
 
 def main():
