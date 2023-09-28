@@ -228,7 +228,37 @@ def prepare_new_game():
     return name, grid_size, ships, bombs, computer_board, previous_guess_board
 
 def main(): 
+    # print(draw_board(computer_board, grid_size))
+    # print(draw_board(previous_guess_board, grid_size))
+    # draw_board(computer_board, grid_size)
+    # heading_value = draw_board(computer_board, grid_size)
+    # heading_value = heading_value.replace(" ", "")
+    # while bombs > 0:
+    #     draw_board(previous_guess_board)
+    #     ship_row, ship_column = request_guess(heading_value, grid_size):
+    #     if previous_guess_board[ship_row][ship_column] == '*':
+    #         print(f"Come on {name}, you already guessed that")
+    #     elif computer_board[ship_row][ship_column] == 'X':
+    #         print(f"Excellent {name}, you have hit a battleship")
+    #         previous_guess_board[ship_row][ship_column] = 'X':
+    #         bombs -=1
+    #     else:
+    #         print("You missed")
+    #         previous_guess_board[ship_row][ship_column] = '*':
+    #         bombs -=1
+    #     print("You have {bombs} bombs left")
+    #     if count_hits(previous_guess_board) == ships
     
+    # print(heading_value)
+    # place_ships(computer_board, grid_size, ships)
+    
+    # print(computer_board) # shows the computers location of ships for testing purposes
+    # ship_row, ship_column = request_guess(heading_value, grid_size)
+    
+    # validate_guess()
+    # place_guess()
+    # check_winner()
+    # check_lives()
     pass
 
 
