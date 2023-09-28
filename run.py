@@ -78,6 +78,25 @@ Pick a number between 1 and 5:\n"))
         except ValueError:
                 print("Thats not a valid number")
 
+def get_bomb_value(name):
+    """
+    Validates user input so that the choices they make for the nu,ber of bombs are within the 
+    boundaries of the program.  Asks the user to enter new inputs until they are acceptable.  
+    Returns a calculated number of BOMBS.  The calculation multiplies the GRID_SIZE by itself
+    giving the total possible number of locations where the SHIPS might be.  Depending on how 
+    adventurous the user feels, they can decide what percentage of possible locations they can 
+    shoot at, before the game begins.  The minimum value is 5% and the maximum value is 50%.
+    """
+    while True:    
+        try:  
+            bombs = int(input(f"{name}, whats the maximum number of bombs you want to use  \
+                              \nPick a percentage between 5 and 50:\n"))         
+            if bombs >= 5 and bombs <= 50:
+                print(f"Good choice {name}")
+                return bombs / 100 # turns int into a percentage
+        except ValueError:
+                print("Thats not a valid number")
+
 def new_player():
     welcome()
     get_player_name()
@@ -86,7 +105,9 @@ def new_game():
     clear()
     grid_size = get_grid_size(name)
     ships = get_ships_value(name)
-    print("newgame", grid_size, ships)
+    bombs = get_bomb_value(name)
+    print(f"name: {name}\ngrid_size: {grid_size}\nships: {ships}\nbombs: {bombs}")
+        
 
 def main():
     while name == "":
