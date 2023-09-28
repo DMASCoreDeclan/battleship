@@ -25,8 +25,8 @@ def welcome_message():
     """
     This message will appear whenever the game starts or restarts, it explains how
     the game works.
-    X denotes a HIT
-    * denotes a MISS from a previous guess
+    * denotes a HIT
+    X denotes a MISS from a previous guess
     | | decontes a potential space for a guess
     The Welcome and Instructions will disappear after 7 seconds
     """
@@ -38,8 +38,8 @@ The grid size is a square and can be between 4x4 and 10x10 in size.\n\
 After each guess, the board with results of your previous guesses will be displayed and\n\
 the number of bombs you have remaining\n \
 At the end of the game you will be asked if you want to play again or return to the main menu.\n\
-X - Hit\n\
-* - Miss\n\
+* - Hit\n\
+X - Miss\n\
 | | Available as a target\n")
     sleep(7)
     clear()
