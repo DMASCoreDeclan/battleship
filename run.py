@@ -3,9 +3,17 @@ from time import sleep # delay time before clear() is used
 from random import randint # for generating random numbers
 
 # grid_size = 10 # initialise grid_size
-ships = 0 # initialise number of ships
-name = "" # initialise name
-bombs = 0 # initialise number of bombs
+# ships = 0 # initialise number of ships
+# name = "" # initialise name
+# bombs = 0 # initialise number of bombs
+
+def prepare_computer_board(grid_size):
+    computer_board = [[' '] * grid_size for x in range(grid_size)] # records the computer location of ships for testing purposes
+    return computer_board
+
+def prepare_guess_board(grid_size):
+    previous_guess_board = [[' '] * grid_size for x in range(grid_size)]
+    return previous_guess_board
 
 def clear():
     """
@@ -48,6 +56,7 @@ def get_grid_size(name):
 Pick a number between 4 and 10:\n"))          
             if grid_size >= 4 and grid_size <= 10:
                 print(f"Good choice {name}")
+                
                 return grid_size
         except ValueError:
                 print("Thats not a valid number")
@@ -109,7 +118,7 @@ def draw_board(board, grid_size):
     """
     This function requires 2 inputs: a BOARD type and the previously supplied GRID_SIZE.
     It then draws a board with letters as headings and numbers as row values.  The user
-    will use the Letter and number input to determine where they would like to place their 
+    will use the Letter and Number input to determine where they would like to place their 
     next guess.  
     Returns HEADING1 which is the list of valid letters that the user must choose fom later.
     """
@@ -187,6 +196,13 @@ def request_guess(heading_value, grid_size):
     ship_row = get_number(grid_size)
     return ship_row, ship_column
 
+def count_hits(board):
+    hits = 0
+    for row in board:
+        for column in row:
+            if column == "X":
+                hits += 1
+    return hits
 
 def place_guess():
     pass
@@ -203,33 +219,40 @@ def check_lives():
 def build_grid(grid_size):
     pass
 
-
-
-def main():
+def prepare_new_game():
     clear()
     # welcome_message()
     name, grid_size, ships, bombs = get_user_preferences()
-    # print(name, grid_size, ships, bombs)
-    # print(type(name), name)
-    # print(type(grid_size), grid_size)
-    # print(type(ships), ships)
-    # print(type(bombs), bombs)
-    COMPUTER_BOARD = [[' '] * grid_size for x in range(grid_size)] # records the computer location of ships for testing purposes
-    draw_board(COMPUTER_BOARD, grid_size)
-    heading_value = draw_board(COMPUTER_BOARD, grid_size)
-    heading_value = heading_value.replace(" ", "")
-    print(heading_value)
-    place_ships(COMPUTER_BOARD, grid_size, ships)
-    print(COMPUTER_BOARD) # shows the computers location of ships for testing purposes
+    computer_board = prepare_computer_board(grid_size)
+    previous_guess_board = prepare_guess_board(grid_size)
+    return name, grid_size, ships, bombs, computer_board, previous_guess_board
+
+def main(): 
+    
+    pass
+
+
+name, grid_size, ships, bombs, computer_board, previous_guess_board = prepare_new_game()
+# main()
+draw_board(computer_board, grid_size)
+heading_value = draw_board(computer_board, grid_size)
+heading_value = heading_value.replace(" ", "")
+place_ships(computer_board, grid_size, ships)
+while bombs > 0:
+    draw_board(previous_guess_board, grid_size)
+    print(computer_board)
     ship_row, ship_column = request_guess(heading_value, grid_size)
-    print(ship_row, ship_column)
-    # validate_guess()
-    # place_guess()
-    # check_winner()
-    # check_lives()
-
-
-
-# PREVIOUS_GUESS_BOARD = [[' '] * grid_size for x in range(grid_size)]
-
-main()
+    if previous_guess_board[ship_row][ship_column] == '*':
+        print(f"Come on {name}, you already guessed that")
+    elif computer_board[ship_row][ship_column] == 'X':
+        print(f"Excellent {name}, you have hit a battleship")
+        previous_guess_board[ship_row][ship_column] = 'X'
+        bombs -=1
+    else:
+        print("You missed")
+        previous_guess_board[ship_row][ship_column] = '*'
+        bombs -=1
+    print("You have {bombs} bombs left")
+    if count_hits(previous_guess_board) == ships:
+        print("You won, well done {name}")
+        break
