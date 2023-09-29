@@ -1,4 +1,4 @@
-import os # for clear()
+import os, math # for clear() 
 from time import sleep # delay time before # clear() is used
 from random import randint # for generating random numbers
 
@@ -22,7 +22,7 @@ def welcome():
     | | decontes a potential space for a guess
     The Welcome and Instructions will disappear after 7 seconds
     """
-    # clear()
+    clear()
     print("Welcome to Battleships\n")
     print("This game is designed to allow you to select the grid size you want to play in,\
           \nthe number of ships you want the computer to place in the grid and determine\
@@ -30,7 +30,8 @@ def welcome():
           \nThe grid size is a square and can be between 4x4 and 10x10 in size.\
           \nAfter each guess, the board with results of your previous guesses will be displayed and\
           \nthe number of bombs you have remaining.\
-          \nAt the end of the game you will be asked if you want to play again or return to the main menu.\
+          \nAt the end of the game you will be asked if you want to play again or \
+          \nreturn to the main menu.\
           \n* - Hit\
           \nX - Miss\
           \n| | Available as a target\
@@ -60,7 +61,7 @@ def get_grid_size(name):
     """
     while True: 
         try:
-            # clear()  
+            clear()  
             grid_size = int(input(f"{name}, what size grid do you want to use?\
             \nPick a number between 4 and 10:\n"))          
             if grid_size >= 4 and grid_size <= 10:
@@ -76,8 +77,7 @@ def get_ships_value(name):
     Returns a valid number of SHIPS
     """
     while True: 
-        try:  
-            # clear()
+        try: 
             ships = int(input(f"{name}, how many ships do you want to pursue?  \
                               \nPick a number between 1 and 5:\n"))        
             if ships >= 1 and ships <= 5:
@@ -95,11 +95,10 @@ def get_bomb_value(name, grid_size):
     shoot at, before the game begins.  The minimum value is 5% and the maximum value is 50%.
     """
     while True:    
-        try:  
-            # clear()
+        try: 
             bombs = int(input(f"{name}, whats the maximum number of bombs you want to use  \
-                              \nPick a percentage between 1 and 99:\n"))         
-            if bombs >= 1 and bombs <= 99:
+                              \nPick a percentage between 10 and 90:\n"))         
+            if bombs >= 10 and bombs <= 90:
                 print(f"Good choice {name}")
                 return bombs / 100 # turns int into a percentage
         except ValueError:
@@ -115,7 +114,7 @@ def prepare_guess_board(grid_size):
     return previous_guess_board
 
 def new_game():
-    # clear()
+    clear()
     global grid_size, ships, bombs, computer_board, previous_guess_board
     grid_size = get_grid_size(name)
     ships = get_ships_value(name)
@@ -127,9 +126,9 @@ def new_game():
           \nYou have chosen to play with a grid: {grid_size} x {grid_size} in size\
           \nwith {ships} ships and {bombs} bombs.\
           \nPreparing your game . . ")
-    sleep(3)
+    sleep(5)
     return grid_size, ships, bombs, computer_board, previous_guess_board
-    # clear()    
+       
 
 def draw_board(board, grid_size):
     """
@@ -139,7 +138,7 @@ def draw_board(board, grid_size):
     next guess.  
     Returns HEADING1 which is the list of valid letters that the user must choose fom later.
     """
-    # clear()
+    clear()
     print(grid_size)
     heading1 = "  A B C D E F G H I J " # Heading for Grid
     heading2 = " ---------------------" # Heading decorator for Grid
@@ -170,13 +169,14 @@ def place_ships(board, grid_size, ships):
         board[ship_row][ship_letter] = "*"
 
 def prepare_boards():
+    clear()
     draw_board(previous_guess_board, grid_size)
     draw_board(computer_board, grid_size)
     place_ships(computer_board, grid_size, ships)
-    # clear()
+    clear()
     print(f"I've placed my ships {name}")
     print("Get ready to play . . .")
-    sleep(2)
+    sleep(3)
 
 def get_letter(heading_value):
     """
@@ -231,7 +231,8 @@ def count_hit_ships():
                 hits += 1
     return hits
 
-def validate_guess(ship_row, ship_column, bombs):	
+def validate_guess(ship_row, ship_column, bombs):
+    clear()	
     if previous_guess_board[ship_row][ship_column] == 'X' or previous_guess_board[ship_row][ship_column] == '*':
         print(f"Come on {name}, you already guessed that")
     elif computer_board[ship_row][ship_column] == '*':
@@ -246,40 +247,32 @@ def validate_guess(ship_row, ship_column, bombs):
     return bombs
 
 def main(bombs, ships, grid_size):
-    # if name == "":
-    #     welcome()
-    #     get_player_name()
-    #     grid_size, ships, bombs, computer_board, previous_guess_board = new_game()
-    #     place_ships(computer_board, grid_size, ships)
-    # print(grid_size, ships, bombs, computer_board, previous_guess_board)
-    # prepare_boards()
-    # draw_board(previous_guess_board, grid_size)
     while bombs > 0 and count_hit_ships() != ships:
         print(f"declan has {bombs} bombs" )
-        # print(draw_board(previous_guess_board, grid_size))
-        # print(computer_board)
-        # draw_board(previous_guess_board, grid_size)
-        # print(previous_guess_board)
         ship_row, ship_column = request_guess(get_heading_value(), grid_size)
         print(ship_row, ship_column)
         bombs = validate_guess(ship_row, ship_column, bombs)
         print(f"you have hit {count_hit_ships()} ship and have {ships - count_hit_ships()} ships left with {bombs} bombs")
-    play_again = input(f"Would you like to play again? {name}\
-                 \nPress Y to Continue\
-                 \nPress any other key to change the player").upper()
-    if play_again != "Y":
-        return name = ""
 
 
     
-if name == "":
+
+while game_on == True:
+    if name == "":
         welcome()
         get_player_name()
+    play = input(f"Would you like to play Battleships? {name}\n\
+                       \nPress Q to Quit the game\n\
+                       \nPress C to Continue\n\
+                       \nPress any other key to change the player\n").upper()
+    if play == "C":
         grid_size, ships, bombs, computer_board, previous_guess_board = new_game()
         place_ships(computer_board, grid_size, ships)
-while name != "":
-    main(bombs, ships, grid_size)
-
+        main(bombs, ships, grid_size)
+    elif play == "Q":
+        game_on = False
+    else:
+        name = ""
 
 
 
