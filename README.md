@@ -1,83 +1,35 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-Welcome,
-
-This is a python based, single player, Battleship game.
-
-This game allows the player 
-
-## Reminders
-
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
-
-## Creating the Heroku app
-
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
-
-1. `heroku/python`
-2. `heroku/nodejs`
-
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
-
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal.
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
----
-
-Happy coding!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-![TicTacToe Favicon](assets/images/tic-tac-toe-white-100px.png)
-
+![Battleships](assets/images/battleship-logo.png)
 # Table of contents
 
-- [Tic Tac Toe](#tic-tac-toe)
+- [Table of contents](#table-of-contents)
+- [Battleships](#battleships)
   - [Site Owner Goals](#site-owner-goals)
   - [Design](#design)
-  - [Features](#features)
+  - [Constraints](#constraints)
   - [Testing](#testing)
-  - [Deployment](#deployment)
   - [Technologies Used](#technologies-used)
   - [Deployment](#deployment)
   - [Credits](#credits)
   - [Acknowledgments](#acknowledgments)
 
-# Tic Tac Toe
+# Table of contents
 
-This game is a fun game for two players to compete against each other.  Player X competes against Player O to get three marks in a row in a 3 x 3 grid.
 
-The application loads with the Instruction being overlayed on a gameBoard.  Once you close the Instructions, an empty gameBoard is presented with 9 cells in a 3 x 3 grid.  
+# Battleships
 
-On initial load, the sound is muted and has an unmute button to toggle the sound On/Off.  The sounds are played when a user places an X or an O in a cell on the gameBoard and when the game is over.  
-
- The cursor becomes a pointer when placed over the Mute/Unmute, Instructions, Restart buttons and the cells in the grid.  
- 
- X always goes first.  When X places their mark, the turn is switched to O.
+This game is designed to allow you to select the grid size you want to play in, the number of ships you want the computer to place in the grid and determine the number of bombs you want to be able to use.  The grid size is a square and can be between 4x4 and 10x10 in size.  After each guess, the board with results of your previous guesses will be displayed and the number of bombs you have remaining.  At the end of the game you will be asked if you want to play again or return to the main menu
+This welcome message and instructions will appear whenever the game starts or restarts with a new player, it explains how the game works.
+    * denotes a HIT
+    X denotes a MISS from a previous guess
+    | | decontes a potential space for a guess
+The Welcome and Instructions will disappear after 7 seconds
+The game is designed to clear/cls the screen at appropriate stages using Python SLEEP and CLEAR commands
 
 
 ## Site Owner Goals
 - To provide the user with an easy to navigate game that is fun to play against an opponent.
-- To present the user with a website that is visually appealing and fully responsive.
+- To present the user with a game that is visually appealing and fully responsive.
 - To present the user with a website that is intuitive and does not need any instructions, despite them being provided.  
 
 ###	First Time User
@@ -87,165 +39,86 @@ On initial load, the sound is muted and has an unmute button to toggle the sound
 
 ### Returning user
 - As a returning user I want to have fun.
-- As a returning user I want to beat my opponent.
+- As a returning user I want to increase the level of difficulty from Easy to Difficult and possibly even Impossible
 - As a returning user I want to beat the computer.
 
 ## Design
-Its designed to be intuitive to figure out, using commonplace icons which give clear purpose messages when hovered over. 
+Battleships follows this flowchart:
+![Battleships FlowChaart](assets/images/battleships-workflow.png)
+On inititalisation, the player is asked for their name, the size of the grid they want to play on, the number of ships they want to pursue and the number of bombs they want to have available to them.
+1. grid_size is requested and has error checking so that the user can only progress by picking a number betwenn 4 and 10.  Once they pick that number, a square grid with that number of squares will be displayed.
+1. ships are then requested and have error checking to ensure that the user picks a nuber between 1 and 5
+1. finally, bombs is requested.  The user can choose Easy, Difficult or Impossible.  The number of bombs is determined by the grid_Size and the difficulty level.
+1. Once the name, grid_size, ships and bombs are determined, two boards are drawn.  Both boards will be grid_size x grid_size in height and width.  The appropriate letters will be displayed as a header to give the columns in the grid unique letters for the user to identify their chosen column.  A row number for each row in the height of the grid is displayed to identify the row number for the users guess.  
+1. The COMPUTER_BOARD is created and randomly populated with the chosen number of ships.  The PREVIOUS_GUESS_BOARD is displayed empty, then the game begins.
+the user is requested to chose a letter from the display above the columns.  Error checking validates that its an apprprite letter.  If not, the user is requested for the information again.
+1. The user is then prompted for a row number.  Again, error checking ensures that only a row number within the grid_size is chosen.
+1. Once a valid guess is entered, the application checks to see if this guess was previously chosen, represents a Hitr or a Miss.
+1. A previously chosen guess or a previously chosen Hit, gives a message that that was already chosen/Hit, the user is asked to guess again, but the number of bombs does not reduce.
+1. If the users guess is a Hit, then a * is placed in the PREVIOUS_GUESS_BOARD, the number of bombs is reduced by 1 and the updated PREVIOUS_GUESS_BOARD is displayed with the * in the location that the user chose.
+1. If the users guess is a Miss, then an X is placed in the PREVIOUS_GUESS_BOARD, the number of bombs is reduced by 1 and the updated PREVIOUS_GUESS_BOARD is displayed with the X in the location that the user chose.
+1. The game continues until one of the following conditions is met:
+- The user has hit all of the ships
+- the user has run out of bombs
+12. Once the game status is determined, the user is asked if they want to play again.  If so, they are prompted for grid_size, ships and bombs but not their name as that's unlikely to have changed since they started the game :)
+1. If the user decides to not play again, the game restarts and requests the next user for their name, grid_size, ships and bombs.
 
 ### Colours
-The colour scheme of the website are black, white and green with lighter shades of green used for the hover effect.  
-[WebAIM Contrast Checker Result 1](https://webaim.org/resources/contrastchecker/?fcolor=000000&bcolor=FBFAF8)  
-[WebAIM Contrast Checker Result 2](https://webaim.org/resources/contrastchecker/?fcolor=79A749&bcolor=000000)
-
-Great care was taken to establish a good contrast between background colours and text at all times to ensure maximum user accessibility. 
-
-### Fonts
-There are two fonts used in the site: "Varela", backed up by sans-serif and "Permanent Marker" backed up by cursive.
-
-"Varela" is used throughout while "Permanent Marker" font is the main font used for the mark of X and O.  
-
-These fonts were imported from: 
-
-[Google Fonts - Permanent Marker](https://fonts.google.com/specimen/Permanent+Marker?query=permanent). 
-
-[Google Fonts - Varela](https://fonts.google.com/?query=Varela&preview.text=Varela&preview.text_type=custom)
+Color is limited to Black and White due to the use of a terminal screen as opposed to a html canvas
 
 ### Imagery
-There is no imagery in the application other than icons and hover effects.  The app was designed so that nothing can happen unless you participate within the realms of the actionable areas of the site.  Within the page boundaries, visual clues are given on what you can/should do, or a popup appears with concise instructions on your next possible options.  
+There is no imagery in the application.  
 
-### Wireframe
-The wireframe was produced using Paint.net. The wireframe for the Mobile and Desktop are the same, as the game was designed for a Mobile device.
+### Workflow
+The workflow was produced using [figma.com](https://www.figma.com/). 
 
- <details>
-
- <summary>Wireframe</summary>
-
-![Wireframe](.devcontainer/docs/images/Wireframe.png)
- </details>
-
-### Layout
-This site is a single page site with 5 sections:
-- an Instruction overlay
-- control buttons to control the Sound, Number of Players and Instructions
-- a Score area
-- a Game area
-- a Results and Restart area
-
-## Features
-The landing page is an overlay with an opacity of .9 that covers the entire viewport.  It explains what each icon does and the rules of Tic Tac Toe.  Once the X icon to close the page is clicked, the game is revealed.  
-
-The site has a very simple layout which includes a h1 heading stating the name of the game.  Below the h1, three large icons/buttons are displayed.  Hovering over the icons indicates their function. 
-
-The first icon toggles between mute and unmute, the site defaults to mute. 
-
-The second icon toggles between playing the computer or playing another player, the site defaults playing against another player.  Toggling players, resets the game board, but not the score.
-
-The third icon redisplays the overlay with the instructions.
-
-Below the icons, the scoreArea is displayed, these scores are updated by javascript (JS).  The Score Area shows the number of Draws/X wins/O Wins for this session, regardless of whether you play an opponent or the computer.
-
-Then the gameBoard is displayed in a 3x3 grid, this is where the Xs and Os are displayed.  
-
-In order to indicate whose turn it is, the user is presented with an X or an O when they hover over an empty cell.  If the cell is occupied, the hover is deactivated.  When the application is loaded, it initialises with X being the first player and thus, an X hovers over all 9 cells until X places their mark. 
-
-On touch screen devices, (devices without a pointer), the X/O hover works by pressing and holding the cell you'd like to select, but the mark is not placed unless you press a cell briefly.  
-
-Everytime a mark is placed in a cell, a click sound is made when the game is unmuted.
-
-Everytime a mark is placed, JS determines if this has resulted in a Win or Draw, if it does, a gameOverSound is played, a div with the result is displayed, identifying X or O as the winner and the scoreArea is updated to increment the DRAW/X wins/O wins.  The Restart button is presented in this div, to run the JS code to reset the gameBoard and hover effects.  If cells remain unoccupied and a winner has not been determined, the game continues. 
-
-The site works best in portrait.  Media queries are used to prevent the viewport rotating if the size of the screen is less than 320px x 767px, the exact size of the game area, (excluding the hidden Game Over area). 
-
+## Constraints
+The deployment terminal is set to 80 columns by 24 rows. 
 
 ## Testing
-
-### Validator Testing
-#### HTML 
-
-No errors were returned when passing through the official W3C Markup Validator [W3C Validator Results](https://validator.w3.org/nu/?showsource=yes&doc=https%3A%2F%2Fdmascoredeclan.github.io%2Ftic-tac-toe-js%2F)
-        
-#### CSS
-
-No errors were returned when passing through the official W3C CSS Validator [W3C CSS Validator Results](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fdmascoredeclan.github.io%2Ftic-tac-toe-js%2F&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
-#### Accessibility
-
-The site achieved a Lighthouse accessibility score of 98% indicating that the colours and fonts chosen are easy to read and accessible.  
-    <details>
-    <summary>Lighthouse Result</summary>
-    ![Lighthouse Score](.devcontainer/docs/images/lighthouse-score.png)
-    </details>
-
-#### Jshint
-
-There is 1 warning: "Expected an assignment or function call and instead saw an expression." - the code works and produces no Warnings or Errors in the DOM Console.
-    <details>
-    <summary>Jshint</summary>
-    ![Jshint Result](.devcontainer/docs/images/jshint-result.png)
-    </details>
-
-### Links Testing
-- The navigation link was tested manually to ensure the user is directed to the correct external wikipedia site.
- 
-### Browser Testing
-- The Website was tested on Google Chrome, Firefox, Microsoft Edge, Safari browsers with no issues noted.
     
 ### Device Testing
-- The website was viewed on a variety of devices such as Desktop, Laptop, iPhone 8, iPhone 11, iPad, and Androids to ensure responsiveness on various screen sizes. The website performed as intended. The responsive design was also checked using Chrome developer tools across multiple devices with structural integrity holding for the various sizes.
-- I also used the following websites to test responsiveness:
-    - [Responsinator](http://www.responsinator.com/?url=https%3A%2F%2Fdmascoredeclan.github.io%2Ftic-tac-toe-js%2F)
-    - [Am I Responsive](http://ami.responsivedesign.is/?url=https%3A%2F%2Fdmascoredeclan.github.io%2Ftic-tac-toe-js%2F)
+The application was viewed on a variety of devices such as Desktop, Laptop, iPhone 8, iPhone 11, iPad, and Androids.  The website performed as expected
 
 ### Friends and Family User Testing
-Friends and family members were asked to review the site and documentation to point out any bugs and/or user experience issues. They tested on a variety of iPhones and Android devices.  On devices with no mouse, the :hover::after css works but only if you know that you need to touch the screen for a milisecond longer than normal!
-On one users android device, the sound works for the first mark being placed and then doesn't work for the remaining moves.  The bug could not be replicated.
+Friends and family members were asked to review the application and documentation to point out any bugs and/or user experience issues.  Most found the game quite annoying due to the command line interface being required.  However, no bugs were reported.
+
 
 ### Fixed Bugs
 
-#### Mute/Unmute image did not appear in the browser, despite the button element showing up
+#### os.system('clear')
+Using the os command os.system('clear') causes and error on Windows but does work on Linux
 
-I was using the incorrect path and it took a long to figure out but was fixed by changing the path to the images file by including "../" in the path.
-
-#### The Score Area did not work and produced console errors.  On github.io the game never revealed the score, the game never concluded despite being OVER!
-
-This took a really long time to figure out because the error was caused by the deployment being out of sync with the code.  Git showed that the code I used had been commited to Git, but when I inspected the code in the browser, the code was a previous version of the code.  I rebuilt the deployment and the code updated in the browser and worked as expected.
-
-#### Toggling between One Player and Two Player broke the game in that after the first game, the cells could not be clicked
-
-It took >10 hours to figure out that the previously applied eventListeners to handleClickComputer and handleClickPlayerVsPlayer had to be removed before the altenative handleClick was applied.
+### Testing
+I have tested 
+grid_size only works between 4 and 10 inclusive using try/except
+ships only works between 1 and 5 inclusive using try/except
+bombs only works by entering E or D or I, all other inputs result in a retry.
+Play Again has worked wih all of the possible scenarios such as doing it at the begining of the game, doing at the end of a game or changing player and then continuing.
 
 ### Known Bugs
+1. In Heroku, some paragraphs do not go onto a new line despite previous lines in the same paragraph, witten with the same commands wrapping correctly.
+1. On android phones, When you enter a choice on Heroku, the residue of previous choices appears before you press ENTER.
 
-- Touch screen devices make the entire gameBoard div, shimmer before displaying the hover effects.
-- The game just doesn't appear well on small mobile devices in landscape mode.  Adjusting the size makes it almost impossible to play
-- The media queries are not refined enough to keep the game in portrait mode if the user rotates their device to landscape.  The rules work on [emulators](http://www.responsinator.com/?url=https%3A%2F%2Fdmascoredeclan.github.io%2Ftic-tac-toe-js%2F) but not on all of the physical devices I've tested on.
+![bug](assets/images/mobile_bug.png)
+
+This example shows where I entered my name on the previous screen: "declan" and then chose option "c" on this screen.  Instead of showing "c", it shows "declanc".  However, it does not prevent the game from progressing with option "c".
+
 
 ### Features Left to Implement
-- Include inputs at the outset to indicate the name of Player 1 (X) and Player 2 (O).
 - Allow users to login and create a profile so that their scores could be recorded on a persistent leaderboard.  
 - Save player score to the leaderboard.  
-- A two player game where both players are at different devices of the same game.
-
-#### The game does not look well on small devices when in landscape:
-
-[Stackoverflow fix](https://stackoverflow.com/questions/63374529/disable-landscape-view-for-a-responsive-design-website) - this didn't work!
-
+- slider in the HTML header to change the grid_size, number of bombs and number of ships
 
 ## Technologies Used
 
 ### Languages
-- HTML5
-- CSS
-- JS (ES6)
+- Python
 
 ### Frameworks - Libraries - Programs Used
-- [Am I Responsive](http://ami.responsivedesign.is/) - Used to verify responsiveness of website on different devices.
-- [Responsinator](http://www.responsinator.com/) - Used to verify responsiveness of website on different devices.
-- [Chrome Dev Tools](https://developer.chrome.com/docs/devtools/) - Used for overall development and tweaking, including testing responsiveness and performance.
 - [GitHub](https://github.com/) - Used for version control and hosting.
 - [MyGitHub](https://github.com/DMASCoreDeclan/tic-tac-toe-js) - Used for version control and hosting of this project.
-- [Google Fonts](https://fonts.google.com/) - Used to import and alter fonts on the page.
-- [W3C](https://validator.w3.org/) - Used for HTML & CSS Validation.
+- [Heroku](https://heroku.com/) - Used for python hosting.
 
 
 ## Deployment
@@ -258,56 +131,26 @@ The project was deployed using GitHub pages. The steps to deploy using GitHub pa
 5. Once selected, click the 'Save'.
 6. Deployment should be confirmed by a message on a green background saying "Your site is published at" followed by the web address.
 
-The live link can be found here - [Tic Tac Toe](https://dmascoredeclan.github.io/tic-tac-toe-js/)
-
-
- <details>
-
- <summary>Am I Responsive Images</summary>
-
-![Tic Tac Toe - Am I Responsive Image](.devcontainer/docs/images/AmIResponsiveResults.png)
- </details>
-
-## Credits
-
-### Media
-
-[TicTacToe Favicon](assets/images/tic-tac-toe-white-100px.png)
- 
-- (https://icon-icons.com/icon/tic-tac-toe/39453)
-
-[Iconfinder](https://www.iconfinder.com/) - Mute/Unmute pngs which were recolored, renamed, restyled
-
-- (https://www.iconfinder.com/icons/4593140/audio_max_sound_speaker_volume_icon)
-
-- (https://www.iconfinder.com/icons/4593142/audio_mute_sound_speaker_volume_icon)
-
-[Flaticon](https://www.flaticon.com/free-icons/vs) - One/Two player icons
- 
-- https://www.flaticon.com/free-icon/computer_2736362
- 
-- https://www.flaticon.com/free-icon/player-versus-player_5515909
+The code can be found here - [Battleships](https://github.com/DMASCoreDeclan/battleship.git)
+The live link can be found here - [Battleships](https://battleships-declan-cc9af76960c2.herokuapp.com/)
 
 
 ### Resources Used
 
- - While all of the code used in this file has been typed by the author, the final design is a hybrid of designs from the following developers:
- - [Kyle from Web Dev Simplified](https://www.youtube.com/watch?v=Y-GkMjUZsmM&t=939s) - index.html.old and script.js.old
- - [Ania Kubów](https://youtu.be/DRaWr0Dcbl0) - index.html.old and script.js.old
- - [Bro Code](https://youtu.be/AnmwHjpEhtA)
- - [Coding with Adam](https://www.youtube.com/watch?v=fPew9OI2PnA&t=1906s)
- - [Adam Khoury](https://www.youtube.com/watch?v=hsSXzdn_0Gg) - toggleMute in JS
- - [CSS-Tricks](https://css-tricks.com/snippets/css/orientation-lock/) - to prevent the screen rotating from portrait to landscape
- - [Flaticon](https://www.flaticon.com/free-icons/vs)
- -[Battleships icon](https://www.battleshipcycles.com/images/battleshipcycles-logo.png)
+ While all of the code used in this file has been typed by the author, the final design is influenced from a design perspective by: [Knowledge Maven](https://www.youtube.com/watch?v=tF1WRCrd_HQ)
+
+The Balttleships logo came from: [Battleships icon](https://www.battleshipcycles.com/images/battleshipcycles-logo.png)
+
+
+### Technologies Used
+1. `heroku/python`
+2. `heroku/nodejs`
+1. Python OS / Time / Randint
+1. [TOC Generator](https://luciopaiva.com/markdown-toc/)
+ 
  
 
- - While some code just has to be the same, all Variable names, CSS names and Function names have been changed.  The design is fundamentally the same as Coding with Adam, with additional feature such as the Mute/Unmute Audio button.  The .wav sounds are downloaded from CodingWithAdmam channel, but were renamed before upload and are called by different names in JS.
-    
-
 ## Acknowledgments
-
-
-My mentor Antonio for his support and advice.
+My mentor Antonio for his support and advice and to Jamie, cohort lead in Code Institute
 
 The Code Institute slack community for their quick responses and very helpful feedback!

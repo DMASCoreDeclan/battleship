@@ -100,12 +100,12 @@ def get_bomb_value(name, grid_size):
         try: 
             clear() 
             bombs = input(f"{name}, what level of difficulty are you looking for?\
-                              \nEasy gives you {(grid_size * grid_size) - 1} of the {(grid_size * grid_size)} bombs required\
-                              \nDifficult gives you 75% or {round((grid_size * grid_size) * .75)} of the bombs you require\
-                              \nImpossible gives you 50% or {round((grid_size * grid_size) * .5)} of the bombs you require\
-                              \nPress E for Easy\
-                              \nPress D for Difficult\
-                              \nPress I for Impossible\n").upper()         
+                          \nEasy gives you {(grid_size * grid_size) - 1} of the {(grid_size * grid_size)} bombs required\
+                          \nDifficult gives you 75% or {round((grid_size * grid_size) * .75)} of the bombs you require\
+                          \nImpossible gives you 50% or {round((grid_size * grid_size) * .5)} of the bombs you require\
+                          \nPress E for Easy\
+                          \nPress D for Difficult\
+                          \nPress I for Impossible\n").upper()         
             if bombs in "EDI":
                 if bombs == "E":
                     bombs = (grid_size * grid_size) - 1
@@ -286,11 +286,11 @@ while game_on == True:
         get_player_name()
     clear()
     play = input(f"Would you like to play Battleships {name}?\n\
-                 \nPress C to Continue\n\
+                 \nPress P to Play\n\
                  \nPress Q to Quit the game\n\
                  \nPress any other key to change the players name\n\
                  \n").upper()
-    if play == "C":
+    if play == "P":
         grid_size, ships, bombs, computer_board, previous_guess_board = new_game()
         place_ships(computer_board, grid_size, ships)
         main(bombs, ships, grid_size)
