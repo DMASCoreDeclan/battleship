@@ -121,6 +121,9 @@ This example shows where I entered my name on the previous screen: "declan" and 
 - [MyGitHub](https://github.com/DMASCoreDeclan/tic-tac-toe-js) - Used for version control and hosting of this project.
 - [Heroku](https://heroku.com/) - Used for python hosting.
 - [Pep8 Validator](https://pep8ci.herokuapp.com/)
+- [Code Beautify](https://codebeautify.org/python-formatter-beautifier?utm_content=cmp-true)
+- [TOC Generator](https://luciopaiva.com/markdown-toc/)
+
 
 
 ## Deployment
@@ -148,7 +151,6 @@ The Balttleships logo came from: [Battleships icon](https://www.battleshipcycles
 1. `heroku/python`
 2. `heroku/nodejs`
 1. Python OS / Time / Randint
-1. [TOC Generator](https://luciopaiva.com/markdown-toc/)
  
  
 

@@ -350,7 +350,7 @@ def validate_guess(ship_row, ship_column, bombs, ships):
     return bombs
 
 
-def get_result(bombs, ships):
+def get_result(bombs, ships, game_on):
     if bombs >= 0 and count_hit_ships() == ships:
         clear()
         print(f"Congratulations {name}, you WON")
@@ -360,32 +360,33 @@ def get_result(bombs, ships):
             print(f"You still had {bombs} bombs left")
         sleep(5)
         clear()
-        return
-    if bombs > 0 and count_hit_ships() < ships:
+        game_on = False
+        return game_on
+    elif bombs > 0 and count_hit_ships() < ships:
         print(f"You have {ships - count_hit_ships()} ships left to hit")
         print(f"You have {bombs} bombs left")
-        warning = 0
-        if bombs < (ships - count_hit_ships() and warning == 0):
-            print(f"\nYou cannot win! {name}")
-            warning += 1
         sleep(3)
-        clear()
-    if bombs == 0:
+        # clear()
+        game_on = True
+        return game_on
+    else:
         clear()
         print(f"{name}, you lost.  You have no bombs left!")
         if ships == 1:
             print(f"You still had 1 ship left to bomb")
         else:
             print(f"You still had {ships} ships left to bomb")
-    return
+        game_on = False
+        sleep(5)
+        return game_on
 
 
-def main(bombs, ships, grid_size):
-    while bombs > 0 and count_hit_ships() != ships:
+def main(bombs, ships, grid_size, game_on):
+    while game_on and count_hit_ships() != ships:
         ship_row, ship_column = request_guess(get_heading_value(), grid_size)
         bombs = validate_guess(ship_row, ship_column, bombs, ships)
-        get_result(bombs, ships)
-
+        game_on = get_result(bombs, ships, game_on)
+        
 
 while game_on:
 
@@ -393,6 +394,7 @@ while game_on:
     if name == "":
         welcome()
         get_player_name()
+        clear()
     play = input(
         f"Would you like to play Battleships {name}?\n\
         \nPress P to Play\n\
@@ -409,7 +411,7 @@ while game_on:
         computer_board = cb
         previous_guess_board = pgb
         place_ships(computer_board, grid_size, ships)
-        main(bombs, ships, grid_size)
+        main(bombs, ships, grid_size, game_on)
     elif play == "Q":
         game_on = False
     else:
