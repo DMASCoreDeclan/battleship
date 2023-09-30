@@ -9,10 +9,14 @@ grid_size = 0
 
 def clear():
     """
-    clears the sreen so that it doesn't become too crowded with previous
-    interactions
+    identifies the OS.  If its NT, use CLS other wise use CLEAR
+    cls/clear clears the sreen so that it doesn't become too crowded
+    with previous interactions
     """
-    os.system("clear")
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
 
 
 def welcome():
@@ -119,10 +123,10 @@ def get_bomb_value(name, grid_size):
 
         try:
             clear()
-            total_grid = grid_size ** 2
+            total_grid = grid_size**2
             easy = round(total_grid - 1)
-            hard = round(total_grid * .75)
-            crazy = round(total_grid * .5)
+            hard = round(total_grid * 0.75)
+            crazy = round(total_grid * 0.5)
             last_text = "bombs required"
             bombs = input(
                 f"{name}, what level of difficulty are you looking for?\
@@ -141,10 +145,16 @@ def get_bomb_value(name, grid_size):
                     bombs = (grid_size * grid_size) * 0.75
                 else:
                     bombs = (grid_size * grid_size) * 0.5
-                print(f"Good luck {name}")
-                sleep(3)
-                clear()
-                return int(bombs)
+            else:
+                print(
+                    "Thats not a valid letter choice.\
+                    \nI think I'll make it IMPOSSIBLE :)"
+                )
+                bombs = (grid_size * grid_size) * 0.5
+            print(f"Good luck {name}")
+            sleep(3)
+            clear()
+            return int(bombs)
         except ValueError:
             print("Thats not a valid letter")
 
@@ -337,42 +347,58 @@ def validate_guess(ship_row, ship_column, bombs, ships):
         print("You missed")
         previous_guess_board[ship_row][ship_column] = "X"
         bombs -= 1
-    print(f"You have {bombs} bombs left")
-    print(f"You have {ships - count_hit_ships()} ships left to hit")
-    if bombs < (ships - count_hit_ships()):
-        print(f"\nYou cannot win! {name}")
-    sleep(3)
     return bombs
+
+
+def get_result(bombs, ships):
+    if bombs >= 0 and count_hit_ships() == ships:
+        clear()
+        print(f"Congratulations {name}, you WON")
+        if bombs <= 1:
+            print("That was a close call, you had just enough bombs")
+        else:
+            print(f"You still had {bombs} bombs left")
+        sleep(5)
+        clear()
+        return
+    if bombs > 0 and count_hit_ships() < ships:
+        print(f"You have {ships - count_hit_ships()} ships left to hit")
+        print(f"You have {bombs} bombs left")
+        warning = 0
+        if bombs < (ships - count_hit_ships() and warning == 0):
+            print(f"\nYou cannot win! {name}")
+            warning += 1
+        sleep(3)
+        clear()
+    if bombs == 0:
+        clear()
+        print(f"{name}, you lost.  You have no bombs left!")
+        if ships == 1:
+            print(f"You still had 1 ship left to bomb")
+        else:
+            print(f"You still had {ships} ships left to bomb")
+    return
 
 
 def main(bombs, ships, grid_size):
     while bombs > 0 and count_hit_ships() != ships:
-        print(f"declan has {bombs} bombs")
         ship_row, ship_column = request_guess(get_heading_value(), grid_size)
         bombs = validate_guess(ship_row, ship_column, bombs, ships)
-        print(
-            f"You have hit {count_hit_ships()} ships and have \
-                {ships - count_hit_ships()} ships left to hit."
-        )
-        if bombs == 0:
-            print("You have no bombs left!")
-        elif bombs == 1:
-            print(f"You still have {bombs} bomb")
-        else:
-            print(f"You still have {bombs} bombs")
+        get_result(bombs, ships)
 
 
 while game_on:
+
+    clear()
     if name == "":
         welcome()
         get_player_name()
-    clear()
     play = input(
         f"Would you like to play Battleships {name}?\n\
-                 \nPress P to Play\n\
-                 \nPress Q to Quit the game\n\
-                 \nPress any other key to change the players name\n\
-                 \n"
+        \nPress P to Play\n\
+        \nPress Q to Quit the game\n\
+        \nPress any other key to change the players name\n\
+        \n"
     ).upper()
     if play == "P":
         """
