@@ -119,20 +119,20 @@ def get_bomb_value(name, grid_size):
 
         try:
             clear()
+            total_grid = grid_size ** 2
+            easy = round(total_grid - 1)
+            hard = round(total_grid * .75)
+            crazy = round(total_grid * .5)
+            last_text = "bombs required"
             bombs = input(
                 f"{name}, what level of difficulty are you looking for?\
-                \nEasy gives you {(grid_size * grid_size) - 1} of the \
-                {(grid_size * grid_size)} bombs required\
-                \nDifficult gives you 75% or \
-                {round((grid_size * grid_size) * .75)} \
-                of the bombs you require\
-                \nImpossible gives you 50% or \
-                {round((grid_size * grid_size) * .5)}\
-                 of the bombs you require\
+                \nEasy gives you {easy} of the {total_grid} {last_text}\
+                \nDifficult gives you {hard} of the {total_grid} {last_text}\
+                \nImpossible gives you {crazy} of the {total_grid} {last_text}\
                 \nPress E for Easy\
                 \nPress D for Difficult\
                 \nPress I for Impossible\
-                \nThe default is: Impossible"
+                \nThe default is: Impossible\n"
             ).upper()
             if bombs in "EDI":
                 if bombs == "E":
@@ -171,8 +171,11 @@ def new_game():
     previous_guess_board = prepare_guess_board(grid_size)
     print(
         f"Thank you for your patience {name}\
-          \nYou have chosen to play with a grid: {grid_size} x {grid_size} in size with {ships} ships and {bombs} bombs.\
-          \nPreparing your game . . ."
+          \nYou have chosen to play with a grid: \
+          \n{grid_size} x {grid_size} in size with\
+          \n{ships} ships and, \
+          \n{bombs} bombs.\
+          \n\nPreparing your game . . ."
     )
     sleep(5)
     return grid_size, ships, bombs, computer_board, previous_guess_board
@@ -257,8 +260,10 @@ def get_letter(heading_value):
     }  # used to convert the heading letter into a number
     while True:
         try:
+            h0 = heading_value[0]  # First Letter in Heading
+            h1 = heading_value[-1]  # Last Letter in Heading
             ship_column = input(
-                f"{name}, please pick a letter from {heading_value[0]} - {heading_value[-1]}\n"
+                f"{name}, please pick a letter from {h0} - {h1}\n"
             ).upper()
             if ship_column in heading_value:
                 return letter_map[ship_column]
@@ -274,12 +279,14 @@ def get_number(grid_size):
     row exists in the grid.
     Returns a 0 based index number.
     """
+    grid_size = grid_size - 1
     while True:
         try:
+            # grid_size = grid_size - 1
             ship_row = int(
-                input(f"{name}, please pick a number from 0 - {grid_size -1}\n")
+                input(f"{name}, please pick a number from 0 - {grid_size}\n")
             )
-            if ship_row <= (grid_size - 1):
+            if ship_row <= (grid_size):
                 return ship_row
             else:
                 print("Thats not a valid number")
@@ -368,7 +375,13 @@ while game_on:
                  \n"
     ).upper()
     if play == "P":
-        grid_size, ships, bombs, computer_board, previous_guess_board = new_game()
+        """
+        computer_board = cb, previous_guess_board = pgb, variable names
+        needed to be shortened to comply with 79 line limit
+        """
+        grid_size, ships, bombs, cb, pgb = new_game()
+        computer_board = cb
+        previous_guess_board = pgb
         place_ships(computer_board, grid_size, ships)
         main(bombs, ships, grid_size)
     elif play == "Q":
