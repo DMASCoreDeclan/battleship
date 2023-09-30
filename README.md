@@ -33,6 +33,7 @@ The game is designed to clear/cls the screen at appropriate stages using Python 
 - To present the user with a website that is intuitive and does not need any instructions, despite them being provided.  
 
 ###	First Time User
+- The application user wants to play a logic game
 - As a first time user I want to be able to easily understand the purpose of the game.
 - As a first time user I want to be able to intuitively navigate the game, play the game, see my score and restart the game once it ends.
 - As a first time user I want to be able to access the instructions of the game.
@@ -119,6 +120,7 @@ This example shows where I entered my name on the previous screen: "declan" and 
 - [GitHub](https://github.com/) - Used for version control and hosting.
 - [MyGitHub](https://github.com/DMASCoreDeclan/tic-tac-toe-js) - Used for version control and hosting of this project.
 - [Heroku](https://heroku.com/) - Used for python hosting.
+- [Pep8 Validator](https://pep8ci.herokuapp.com/)
 
 
 ## Deployment
