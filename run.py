@@ -26,7 +26,7 @@ def welcome():
     * denotes a HIT
     X denotes a MISS from a previous guess
     | | decontes a potential space for a guess
-    The Welcome and Instructions will disappear after 7 seconds
+    The Welcome and Instructions will disappear after 15 seconds
     """
     clear()
     print("Welcome to Battleships\n\n")
@@ -44,7 +44,7 @@ def welcome():
             \n| | Available as a target\
             \n"
     )
-    sleep(7)
+    sleep(15)
     clear()
 
 
@@ -243,17 +243,6 @@ def place_ships(board, grid_size, ships):
         board[ship_row][ship_letter] = "*"
 
 
-def prepare_boards():
-    clear()
-    draw_board(previous_guess_board, grid_size)
-    draw_board(computer_board, grid_size)
-    place_ships(computer_board, grid_size, ships)
-    clear()
-    print(f"I've placed my ships {name}")
-    print("Get ready to play . . .")
-    sleep(3)
-
-
 def get_letter(heading_value):
     """
     Validates user input so that the choice they make for the letter of
@@ -364,28 +353,31 @@ def get_result(bombs, ships, game_on):
             print("That was a close call, you had just enough bombs")
         else:
             print(f"You still had {bombs} bombs left")
-        sleep(5)
+        sleep(10)
         clear()
         game_on = False
         return game_on
     elif bombs > 0 and remaining > 0:
-        print(f"You have {remaining} ships left to hit")
+        if remaining == 1:
+            print(f"You have {remaining} ship left to hit")
+        else:
+            print(f"You have {remaining} ships left to hit")
         print(f"You have {bombs} bombs left")
-        sleep(5)
+        sleep(4)
         clear()
         game_on = True
         return game_on
     else:
         clear()
         draw_board(computer_board, grid_size)
-        print(f"{name}, you lost.  You have no bombs left!")
-        print("I placed my ships here:")
+        print(f"{name}, here's where I placed my ships")
+        print("You lost.  You have no bombs left and")
         if remaining == 1:
-            print(f"You still had 1 ship left to bomb")
+            print(f"you still had 1 ship left to bomb")
         else:
-            print(f"You still had {remaining} ships left to bomb")
+            print(f"you still had {remaining} ships left to bomb")
         game_on = False
-        sleep(7)
+        sleep(10)
         return game_on
 
 
