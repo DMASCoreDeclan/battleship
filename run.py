@@ -9,9 +9,9 @@ grid_size = 0
 
 def clear():
     """
-    identifies the OS.  If its NT, use CLS other wise use CLEAR
+    identifies the OS.  If its NT/Windows, use CLS other wise use CLEAR
     cls/clear clears the sreen so that it doesn't become too crowded
-    with previous interactions
+    with previous user interactions
     """
     if os.name == "nt":
         os.system("cls")
@@ -29,23 +29,23 @@ def welcome():
     The Welcome and Instructions will disappear after 7 seconds
     """
     clear()
-    print("Welcome to Battleships\n")
+    print("Welcome to Battleships\n\n")
     print(
         "This game is designed to allow you to select the grid size you want\
             \nto play in, the number of ships you want the computer to place\
             \nin the grid and determine the number of bombs you want to be\
-            \nable to use.  The grid size is a square and can be between 4x4\
-            \n and 10x10 in size.  After each guess, the board with results\
-            \nof your previous guesses will be displayed and the number of\
-            \nbombs you have remaining. At the end of the game you will be\
-            \n asked if you want to play again or return to the main menu.\
-            \n* - Hit\
+            \n\nable to use. The grid size is a square and can be between 4x4\
+            \nand 10x10 in size.  After each guess, the board with results\
+            \n\nof your previous guesses will be displayed and the number of\
+            \n\nbombs you have remaining. At the end of the game you will be\
+            \n\nasked if you want to play again or return to the main menu.\
+            \n\n* - Hit\
             \nX - Miss\
             \n| | Available as a target\
             \n"
     )
-    sleep(1)
-    # clear()
+    sleep(7)
+    clear()
 
 
 def get_player_name():
@@ -54,7 +54,11 @@ def get_player_name():
     """
     global name
     name = input("What is your name: \n")
-    print(f"Thank you {name}")
+    if name == "":
+        clear()
+        print("I'd really like to know your name")
+        get_player_name()
+        print(f"Thank you {name}")
     sleep(1)
     # clear()
 
@@ -138,19 +142,20 @@ def get_bomb_value(name, grid_size):
                 \nPress I for Impossible\
                 \nThe default is: Impossible\n"
             ).upper()
+            total_size = grid_size * grid_size
             if bombs in "EDI":
                 if bombs == "E":
-                    bombs = (grid_size * grid_size) - 1
+                    bombs = (total_size) - 1
                 elif bombs == "D":
-                    bombs = (grid_size * grid_size) * 0.75
+                    bombs = (total_size) * 0.75
                 else:
-                    bombs = (grid_size * grid_size) * 0.5
+                    bombs = (total_size) * 0.5
             else:
                 print(
                     "Thats not a valid letter choice.\
                     \nI think I'll make it IMPOSSIBLE :)"
                 )
-                bombs = (grid_size * grid_size) * 0.5
+                bombs = (total_size) * 0.5
             print(f"Good luck {name}")
             sleep(3)
             clear()
@@ -351,6 +356,7 @@ def validate_guess(ship_row, ship_column, bombs, ships):
 
 
 def get_result(bombs, ships, game_on):
+    remaining = ships - count_hit_ships()
     if bombs >= 0 and count_hit_ships() == ships:
         clear()
         print(f"Congratulations {name}, you WON")
@@ -362,22 +368,24 @@ def get_result(bombs, ships, game_on):
         clear()
         game_on = False
         return game_on
-    elif bombs > 0 and count_hit_ships() < ships:
-        print(f"You have {ships - count_hit_ships()} ships left to hit")
+    elif bombs > 0 and remaining > 0:
+        print(f"You have {remaining} ships left to hit")
         print(f"You have {bombs} bombs left")
-        sleep(3)
-        # clear()
+        sleep(5)
+        clear()
         game_on = True
         return game_on
     else:
         clear()
+        draw_board(computer_board, grid_size)
         print(f"{name}, you lost.  You have no bombs left!")
-        if ships == 1:
+        print("I placed my ships here:")
+        if remaining == 1:
             print(f"You still had 1 ship left to bomb")
         else:
-            print(f"You still had {ships} ships left to bomb")
+            print(f"You still had {remaining} ships left to bomb")
         game_on = False
-        sleep(5)
+        sleep(7)
         return game_on
 
 
@@ -386,7 +394,7 @@ def main(bombs, ships, grid_size, game_on):
         ship_row, ship_column = request_guess(get_heading_value(), grid_size)
         bombs = validate_guess(ship_row, ship_column, bombs, ships)
         game_on = get_result(bombs, ships, game_on)
-        
+
 
 while game_on:
 
