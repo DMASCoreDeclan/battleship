@@ -18,6 +18,8 @@
 
 # Battleships
 
+If you'd like to play the game now, press this link - [Battleships](https://battleships-declan-cc9af76960c2.herokuapp.com/)
+
 This game is designed to allow you to select the grid size you want to play in, the number of ships you want the computer to place in the grid and determine the number of bombs you want to be able to use.  The grid size is a square and can be between 4x4 and 10x10 in size.  After each guess, the board with results of your previous guesses will be displayed and the number of bombs you have remaining.  At the end of the game you will be asked if you want to play again or return to the main menu.
 This welcome message and instructions will appear whenever the game starts or restarts with a new player, it explains how the game works.
     * denotes a HIT
@@ -44,19 +46,26 @@ The game is designed to clear/cls the screen at appropriate stages using Python 
 - As a returning user I want to beat the computer.
 
 ## Design
-Battleships follows this flowchart:
-![Battleships FlowChaart](assets/images/battleships-workflow.png)
-On initialisation, the player is asked for their name, the size of the grid they want to play on, the number of ships they want to pursue and the number of bombs they want to have available to them.
-1. grid_size is requested and has error checking so that the user can only progress by picking a number between 4 and 10.  Once they pick that number, a square grid with that number of squares will be displayed.
-1. The number of ships are then requested and have error checking to ensure that the user picks a number between 1 and 5
-1. Finally, the number of bombs are requested.  The user can choose Easy, Difficult or Impossible.  The number of bombs is determined by the grid_size and the difficulty level.
+### Battleships original wireframe:
+![Battleships Wireframe](assets/images/battleships-wireframe.png)
+
+
+After writing the code, the flowchart now looks like this:
+### Battleships Workflow:
+![Battleships Workflow](assets/images/battleships-workflow.png)
+1. On initialisation, the player is asked for their name, and then the Welcome and Instructions are displayed.  
+1. The user is then asked for input on the size of the grid they want to play on, the number of ships they want to pursue and the number of bombs they want to have available to them.  this input is all validated OR default values are chosen.
+- 1. grid_size is requested and has error checking so that the user can only progress by picking a number between 4 and 10.  Once they pick that number, a square grid with that number of squares will be displayed.
+- 2. The number of ships are then requested and have error checking to ensure that the user picks a number between 1 and 5
+- 3. Finally, the number of bombs are requested.  The user can choose Easy, Difficult or Impossible.  The number of bombs is determined by the grid_size and the difficulty level.
 1. Once the name, grid_size, ships and bombs are determined, two boards are drawn.  Both boards will be grid_size x grid_size in height and width.  The appropriate letters will be displayed as a header to give the columns in the grid unique letters for the user to identify their chosen column.  A row number for each row in the height of the grid is displayed to identify the row number for the users guess.  The row numbers begin at 0.  
-1. The COMPUTER_BOARD is created and randomly populated with the chosen number of ships.  The PREVIOUS_GUESS_BOARD is displayed empty, then the game begins.  The user is requested to choose a letter from those displayed above the columns.  Error checking validates that its an appropriate letter.  If not, the user is requested for the information again.
+1. The COMPUTER_BOARD is created and randomly populated with the chosen number of ships.  While the board is drawn, it is not displayed unless the user loses the game.  
+1. The PREVIOUS_GUESS_BOARD is displayed empty, then the game begins.  The user is requested to choose a letter from those displayed above the columns.  Error checking validates that its an appropriate letter.  If not, the user is requested for the information again.
 1. The user is then prompted for a row number.  Again, error checking ensures that only a row number within the grid_size is chosen.
 1. Once a valid guess is entered, the application checks to see if this guess was previously chosen, represents a Hit or a Miss.
-1. A previously chosen guess or a previously chosen Hit, gives a message that that was already chosen/Hit, the user is asked to guess again, but the number of bombs does not reduce.
-1. If the users guess is a Hit, then a * is placed in the PREVIOUS_GUESS_BOARD, the number of bombs is reduced by 1 and the updated PREVIOUS_GUESS_BOARD is displayed with the * in the location that the user chose.
-1. If the users guess is a Miss, then an X is placed in the PREVIOUS_GUESS_BOARD, the number of bombs is reduced by 1 and the updated PREVIOUS_GUESS_BOARD is displayed with the X in the location that the user chose.
+- 1. A previously chosen guess or a previously chosen Hit, gives a message that that was already chosen/Hit, the user is asked to guess again, but the number of bombs does not reduce.
+- 2. The application checks to see if this produces a WIN, if not, the number of bombs is reduced by 1 and the updated and the PREVIOUS_GUESS_BOARD is displayed with the * in the location that the user chose.
+- 3. If the users guess is a Miss, then an X is placed in the PREVIOUS_GUESS_BOARD, the number of bombs is reduced by 1 and the updated PREVIOUS_GUESS_BOARD is displayed with the X in the location that the user chose.
 1. The game continues until one of the following conditions is met:
 - The user has hit all of the ships
 - The user has run out of bombs
@@ -99,10 +108,19 @@ Friends and family members were asked to review the application and documentatio
 
 ### Fixed Bugs
 
-#### os.system('clear')
+#### def clear()
 Using the os command os.system('clear') causes an error on Windows but does work on Linux.  I updated the CLEAR function to check which OS the program was running on and use the OS appropriate clear/cls option.  
 
+#### def welcome()
+In Heroku, some paragraphs do not go onto a new line despite previous lines in the same paragraph, written with the same commands wrapping correctly.  I added "\n\n" to the begining of the sentences instead of "\n".  this fixed the problem.
+
+#### def get_player_name()
+The validation requires a name and will not accept an empty string.  during testing, if I pressed enter several times, when I finally entered a name, the application printed "Thank you Declan" several times.  They're was recursion.  I changed the lop from and IF to a WHILE and removed get_player_name() recursion.  Now, while it continues to ask for a name until it gets one, it only says THANK YOU, once.
+
+
 ### Testing
+I used [Pep8 Validator](https://pep8ci.herokuapp.com/) to make sure the code conformed with the requirements of Heroku
+
 I have tested the following scenarios:
 - grid_size only works between 4 and 10 inclusive using try/except
 - ships only works between 1 and 5 inclusive using try/except
@@ -112,7 +130,7 @@ I have tested the following scenarios:
 - Play Again has worked with all of the possible scenarios such as doing it at the begining of the game, doing at the end of a game or changing player and then continuing.
 
 ### Known Bugs
-1. In Heroku, some paragraphs do not go onto a new line despite previous lines in the same paragraph, written with the same commands wrapping correctly.
+
 1. On android phones, when you enter a choice on Heroku, the residue of previous choices appears before you press ENTER.
 
 ![bug](assets/images/mobile_bug.png)
@@ -142,8 +160,39 @@ This example shows where I entered my name on the previous screen: "declan" and 
 ## Deployment
 
 The project was deployed using Heroku. 
+
 The code can be found here - [Battleships](https://github.com/DMASCoreDeclan/battleship.git)
+
 The live link can be found here - [Battleships](https://battleships-declan-cc9af76960c2.herokuapp.com/)
+
+Before deploying to Heroku pip3 freeze > requirements.txt was used to add all the dependencies required to the requirements.txt file. This is required for the game to run on Heroku.  
+
+The following steps were then taken:
+
+- Log in to Heroku or create an account.
+- On the main page click the button labelled New in the top right corner and from the drop-down menu select "Create New App".
+- Enter a unique and meaningful app name, I chose: battleships-declan.
+- Next select your region.
+- Click on the Create App button.
+- Click on the Settings Tab and scroll down to Config Vars.
+- Click Reveal Config Vars and enter port into the Key box and 8000 into the Value box and click the Add - button.
+- Scroll down to the Buildpack section click Add Buildpack select Python and click Save Changes
+- Scroll down to the Buildpack section click Add Buildpack select node.js and click Save Changes
+- Note: The Buildpacks must be in the correct order. If not click and drag them to move into the correct order.
+- Scroll to the top of the page and choose the Deploy tab.
+- Select Github as the deployment method.
+- Confirm you want to connect to GitHub.
+- Search for the repository name and click the connect button.  (https://github.com/DMASCoreDeclan/battleship.git)
+- Scroll to the bottom of the deploy page and either click Enable Automatic Deploys for automatic deploys or Deploy Branch to deploy manually. Manually deployed branches will need re-deploying each time the repo is updated.
+- Click View to view the deployed site.
+- The site is now live and operational.
+
+
+
+
+
+
+
 
 
 ### Resources Used
