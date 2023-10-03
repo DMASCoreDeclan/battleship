@@ -392,12 +392,13 @@ while game_on:
 
     clear()
     if name == "":
-        welcome()
         get_player_name()
+        welcome()
         clear()
     play = input(
         f"Would you like to play Battleships {name}?\n\
         \nPress P to Play\n\
+        \nPress I to Play\n\
         \nPress Q to Quit the game\n\
         \nPress any other key to change the players name\n\
         \n"
@@ -412,6 +413,8 @@ while game_on:
         previous_guess_board = pgb
         place_ships(computer_board, grid_size, ships)
         main(bombs, ships, grid_size, game_on)
+    elif play == "I":
+        welcome()
     elif play == "Q":
         game_on = False
     else:
