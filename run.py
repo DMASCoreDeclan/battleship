@@ -54,11 +54,11 @@ def get_player_name():
     """
     global name
     name = input("What is your name: \n")
-    if name == "":
+    while name == "":
         clear()
         print("I'd really like to know your name")
-        get_player_name()
-        print(f"Thank you {name}")
+        name = input("What is your name: \n")
+    print(f"Thank you {name}")
     sleep(1)
     # clear()
 
