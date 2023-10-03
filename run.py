@@ -32,10 +32,10 @@ def welcome():
     print("Welcome to Battleships\n\n")
     print(
         "This game is designed to allow you to select the grid size you want\
-            \nto play in, the number of ships you want the computer to place\
-            \nin the grid and determine the number of bombs you want to be\
+            \n\nto play in, the number of ships you want the computer to place\
+            \n\nin the grid and determine the number of bombs you want to be\
             \n\nable to use. The grid size is a square and can be between 4x4\
-            \nand 10x10 in size.  After each guess, the board with results\
+            \n\nand 10x10 in size.  After each guess, the board with results\
             \n\nof your previous guesses will be displayed and the number of\
             \n\nbombs you have remaining. At the end of the game you will be\
             \n\nasked if you want to play again or return to the main menu.\
@@ -398,7 +398,7 @@ while game_on:
     play = input(
         f"Would you like to play Battleships {name}?\n\
         \nPress P to Play\n\
-        \nPress I to Play\n\
+        \nPress I for the Instructions\n\
         \nPress Q to Quit the game\n\
         \nPress any other key to change the players name\n\
         \n"
